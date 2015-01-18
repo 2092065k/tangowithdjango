@@ -12,6 +12,6 @@ admin.site.register(Category, CategoryAdmin)
 
 class PageAdmin(admin.ModelAdmin):
     fields = ['title', 'category', 'url', 'views']
-    list_display = ('title', 'category', 'url')
+    list_display = ('title', 'category', 'url', 'views')
 
 admin.site.register(Page, PageAdmin)
