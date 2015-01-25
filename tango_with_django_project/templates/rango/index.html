@@ -8,7 +8,7 @@
         <h1>Rango says...hello world!</h1>
 
         {% if categories %}
-        <h3>Top categories:</h3>
+            <h3>Top categories:</h3>
             <ul>
                 {% for category in categories %}
                 <li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
@@ -19,13 +19,14 @@
         {% endif %}
         
         {% if top_pages %}
-        <h3>Top 5 pages:</h3>
-        <ul>
-        {% for page in top_pages %}
-         <li><a href = "{{ page.url }}">{{ page.title }}</a></li>
-         {% endfor %}
-         </ul>
+            <h3>Top 5 pages:</h3>
+            <ul>
+                {% for page in top_pages %}
+                <li><a href = "{{ page.url }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
         {% endif %}
+        <a href="/rango/add_category/">Add a new Category</a><br />
         <a href="/rango/about/">About</a>
     </body>
 </html>
