@@ -91,5 +91,13 @@ def register(request):
         profile_form = UserProfileForm()
         
     return render(request, 'rango/register.html', {'user_form' : user_form, 'profile_form' : profile_form, 'registered' : registered})
+    
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username = username, password = password)
+        
+        if user:
            
             
