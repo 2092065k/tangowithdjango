@@ -99,5 +99,15 @@ def user_login(request):
         user = authenticate(username = username, password = password)
         
         if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/rango/')
+            else:
+                return HttpResponse("Your Rango acount is disabled.")
+         else:
+            print "Invalid login details supplied {0}, {1}".format(usename, pasword)
+            return HttpResponse("Invalid login details supplied.")
+    else:
+        return render(request, 'rango/login.html', {})
            
             
