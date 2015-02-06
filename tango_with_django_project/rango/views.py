@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from rango.models import Category, Page
-from rango.forms import CategoryForm, PageForm
-from rango.forms import UserForm, UserProfileForm
+from django.http import HttpResponse, HttpResponseRedirect
+from rango.models import Category, Page, UserProfile
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -28,6 +30,7 @@ def category(request, category_name_slug):
         pass
     return render(request, 'rango/category.html', context_dict)
 
+@login_required
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -41,6 +44,7 @@ def add_category(request):
         form = CategoryForm()
     return render(request, 'rango/add_category.html', {'form' : form})
 
+@login_required
 def add_page(request, category_name_slug):
     try:
         cat = Category.objects.get(slug=category_name_slug)
@@ -104,10 +108,23 @@ def user_login(request):
                 return HttpResponseRedirect('/rango/')
             else:
                 return HttpResponse("Your Rango acount is disabled.")
-         else:
-            print "Invalid login details supplied {0}, {1}".format(usename, pasword)
-            return HttpResponse("Invalid login details supplied.")
+        else:
+            print "Invalid login details supplied {0}, {1}".format(username, password)
+            try:
+                User.objects.get(username = username)
+                return HttpResponse("<b>Incorrect password!</b>")
+            except:
+                return HttpResponse("<b>Invalid username and password supplied!</b>")
     else:
         return render(request, 'rango/login.html', {})
+        
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
+    
+@login_required
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/rango/')
            
             
