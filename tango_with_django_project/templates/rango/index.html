@@ -15,7 +15,7 @@
             <h3>Top 5 categories:</h3>
             <ul>
                 {% for category in categories %}
-                <li><a href="/rango/category/{{ category.slug }}">{{ category.name }}</a></li>
+                <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
