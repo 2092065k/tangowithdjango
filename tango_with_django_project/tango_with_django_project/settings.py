@@ -99,12 +99,12 @@ STATICFILES_DIRS = (
 #media files
 MEDIA_URL = '/media/'
 
-#pasword protection
+#password protection
 
 PASSWORD_HASHERS = (
 'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
 )
 
-#redirecting users who arent logged in
+#redirecting users who aren't logged in
 LOGIN_URL = '/rango/login/'
