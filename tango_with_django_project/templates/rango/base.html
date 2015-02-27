@@ -18,7 +18,7 @@
                 <li><a href="{% url 'auth_logout' %}?next=/rango/">Logout</a></li>
             {% else %}
                 <li><a href="{% url 'registration_register' %}">Register Here</a></li>
-                <li><a href="<a href="{% url 'auth_login' %}">">Login</a></li>
+                <li><a href="{% url 'auth_login' %}">Login</a></li>
             {% endif %}
                 <li><a href ="{% url 'index' %}">Index</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
