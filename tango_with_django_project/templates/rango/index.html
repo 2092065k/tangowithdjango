@@ -1,32 +1,58 @@
 {% extends 'rango/base.html' %}
+
 {% load staticfiles %}
 
-{% block body_block %}
-    {% if user.is_authenticated %}
-        <h1>Rango says... hello {{ user.username }}!</h1>
-    {% else %}
-       <h1>Rango says... hello world!</h1>
-    {% endif %}
+{% block title %}Index{% endblock %}
 
-    {% if categories %}
-        <h3>Top 5 categories:</h3>
-        <ul>
-        {% for category in categories %}
-            <li><a href="{% url 'category' category.slug %}">{{ category.name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <strong>There are no categories present.</strong>
-    {% endif %}
-        
-    {% if top_pages %}
-        <h3>Top 5 pages:</h3>
-        <ul>
-            {% for page in top_pages %}
-            <li><a href = "{{ page.url }}">{{ page.title }}</a></li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endblock %}  
+        {% block body_block %}
+{% if user.is_authenticated %}
+    <div class="page-header">
+
+                <h1>Rango says... hello {{ user.username }}!</h1>
+            {% else %}
+                <h1>Rango says... hello world!</h1>
+            {% endif %}
+</div>
+
+         <div class="row placeholders">
+            <div class="col-xs-12 col-sm-6 placeholder">
+            
+               <div class="panel panel-primary">
+                    <div class="panel-heading">
+                    <h3 class="panel-title">Top 5 categories</h3>
+                    </div>
+                </div>
+
+              {% if categories %}
+                    <ul class="list-group">
+                        {% for category in categories %}
+                            <li class="list-group-item"><a href="{% url 'category'  category.slug %}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <strong>There are no categories present.</strong>
+                {% endif %}
+
+            </div>
+            <div class="col-xs-12 col-sm-6 placeholder">
+            
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Top 5 pages</h3>
+                </div>
+            </div>
+
+                {% if top_pages %}
+                    <ul class="list-group">
+                        {% for page in top_pages %}
+                            <li class="list-group-item"><a href="{{page.url}}">{{ page.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <strong>There are no pages present.</strong>
+                {% endif %}
+            </div>
+          </div>
+        {% endblock %}
         
 
