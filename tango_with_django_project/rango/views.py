@@ -45,6 +45,14 @@ def about(request):
 
 def category(request, category_name_slug):
     context_dict = {}
+    context_dict['result_list'] = None
+    context_dict['query'] = None
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        if query:
+            result_list = run_query(query)
+            context_dict['result_list'] = result_list
+            context_dict['query'] = query
     try:
         category = Category.objects.get(slug=category_name_slug)
         category.views = category.views + 1
@@ -56,6 +64,8 @@ def category(request, category_name_slug):
         context_dict['category'] = category
     except Category.DoesNotExist:
         pass
+    if not context_dict['query']:
+        context_dict['query'] = category.name
     return render(request, 'rango/category.html', context_dict)
 
 @login_required
@@ -97,16 +107,6 @@ def add_page(request, category_name_slug):
 @login_required
 def restricted(request):
     return render(request, 'rango/restricted.html', {})
-
-def search(request):
-    result_list = []
-    if request.method == 'POST':
-        query = request.POST['query'].strip()
-        
-        if query:
-            result_list = run_query(query)
-            
-    return render(request, 'rango/search.html', {'result_list': result_list})
     
 def track_url(request):
     page_id = None
@@ -123,4 +123,75 @@ def track_url(request):
                 pass
                 
     return redirect(url) 
+    
+def register_profile(request):
+    registered = False
+    if request.method == 'POST':
+        profile_form = UserProfileForm(data = request.POST)
+        
+        if profile_form.is_valid():
+            profile = profile_form.save(commit = False)
+            profile.user = request.user
+            
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            
+            profile.save()
+            registered = True
+        else:
+            print profile_form.errors
+    else:
+        profile_form = UserProfileForm()
+    return render(request, 'rango/profile_registration.html', {'profile_form' : profile_form, 'registered' : registered})
+
+@login_required
+def profile(request):
+    context_dict = {}
+    try:
+        user = request.user
+        userProfile = UserProfile.objects.get(user = user)
+    except:
+        user = None
+        userProfile = None
+        
+    context_dict['username'] = request.user.username
+    context_dict['email'] = request.user.email
+    
+    try:
+        context_dict['website'] = userProfile.website
+        context_dict['website_name'] = userProfile.website[7:]
+        context_dict['picture'] = userProfile.picture
+    except:
+        pass
+    return render(request, 'rango/profile.html', context_dict)
+    
+@login_required
+def edit_profile(request):
+    editing_done = False
+    if request.method == 'POST':
+        profile_form = UserProfileForm(data = request.POST)
+         #try and catch here to fix the profiles created with default registration only
+        try:
+            profile = UserProfile.objects.get(user = request.user)
+        except:
+            profile = profile_form.save(commit = False)
+            profile.user = request.user
+        if profile_form.is_valid():
+            profile.website = request.POST['website']
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+            editing_done = True
+    else:
+        profile_form = UserProfileForm()
+    return render(request, 'rango/edit_profile.html', {'profile_form' : profile_form, 'editing_done' : editing_done})    
+    
+def users(request):
+    context_dict = {}
+    try:
+        users = User.objects.order_by('username')
+        context_dict['users'] = users
+    except:
+        pass
+    return render(request, 'rango/users.html', context_dict)
     

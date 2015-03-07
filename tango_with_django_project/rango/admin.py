@@ -16,4 +16,7 @@ class PageAdmin(admin.ModelAdmin):
 
 admin.site.register(Page, PageAdmin)
 
-admin.site.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user','website', 'picture')
+
+admin.site.register(UserProfile, UserProfileAdmin)

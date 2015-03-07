@@ -1,0 +1,23 @@
+{% extends 'rango/base.html' %}
+
+{% block title %}Users{% endblock %}
+{% block body_block %}
+    
+    <div class="page-header">
+            <h1>Users of Rango</h1>
+    </div>
+    
+    {% if users %}
+        <div class="col-sm-5">
+        <ul class="list-group">
+        {% for user in users %}
+            <li class="list-group-item">{{user.username}}</li>
+        {% endfor %}
+        </ul>
+        </div>
+    {% else %}
+        Rango has no users.... yet...
+    {% endif %}
+    
+    
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Profile Page{% endblock %}
+{% block body_block %}
+    <div class = "page-header"><h1><b>{{ username }}'s Profile </b></h1></div>
+        Email: {{ email }}<br />
+        Website: <a href ="{{ website }}">{{ website_name }}</a><br />
+        <img src="{{ MEDIA_URL }}{{ picture }}" alt = "{{ username }}"/><br /><br />
+        <a class="btn btn-primary" href="{% url 'edit_profile' %}">Edit Profile</a>
+        <a class="btn btn-primary" href="{% url 'auth_password_change' %}"> Change password</a>
+        
+
+{% endblock %}
