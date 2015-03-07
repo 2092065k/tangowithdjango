@@ -11,7 +11,7 @@
         <div class="col-sm-5">
         <ul class="list-group">
         {% for user in users %}
-            <li class="list-group-item">{{user.username}}</li>
+            <li class="list-group-item"><a href="{% url 'profile' user.username %}">{{user.username}}</a></li>
         {% endfor %}
         </ul>
         </div>

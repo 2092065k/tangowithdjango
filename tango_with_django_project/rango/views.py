@@ -144,25 +144,22 @@ def register_profile(request):
         profile_form = UserProfileForm()
     return render(request, 'rango/profile_registration.html', {'profile_form' : profile_form, 'registered' : registered})
 
-@login_required
-def profile(request):
+def profile(request, user_username):
     context_dict = {}
+    personal_profile = False
     try:
-        user = request.user
+        user = User.objects.get(username = user_username)
         userProfile = UserProfile.objects.get(user = user)
-    except:
-        user = None
-        userProfile = None
-        
-    context_dict['username'] = request.user.username
-    context_dict['email'] = request.user.email
-    
-    try:
+        context_dict['username'] = user.username
+        context_dict['email'] = user.email
         context_dict['website'] = userProfile.website
         context_dict['website_name'] = userProfile.website[7:]
         context_dict['picture'] = userProfile.picture
+        if user ==request.user:
+            personal_profile = True
     except:
         pass
+    context_dict['personal_profile'] = personal_profile
     return render(request, 'rango/profile.html', context_dict)
     
 @login_required
