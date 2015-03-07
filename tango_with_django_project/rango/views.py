@@ -64,8 +64,13 @@ def category(request, category_name_slug):
         context_dict['category'] = category
     except Category.DoesNotExist:
         pass
+    #fixing a bug where site crashes if category is not in context dict
     if not context_dict['query']:
-        context_dict['query'] = category.name
+        try:
+            default_query = category.name
+        except:
+            default_query = ""
+        context_dict['query'] = default_query
     return render(request, 'rango/category.html', context_dict)
 
 @login_required
