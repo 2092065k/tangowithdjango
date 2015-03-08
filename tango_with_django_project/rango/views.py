@@ -63,6 +63,15 @@ def category(request, category_name_slug):
         pages = Page.objects.filter(category=category).order_by('-views')
         context_dict['pages'] = pages
         context_dict['category'] = category
+        
+        #handling cookies to stop the user from liking a page multiple times
+        clicked = request.session.get(str(category.id))
+        show = True
+        if clicked:
+            if clicked == category.id:
+                show = False
+        context_dict['show'] = show
+        
     except Category.DoesNotExist:
         pass
     #fixing a bug where site crashes if category is not in context dict
@@ -211,6 +220,9 @@ def like_category(request):
             likes = cat.likes + 1
             cat.likes = likes
             cat.save()
+        #a cookie to stop a user from liking a page multiple times
+        liked_cat = str(cat.id)
+        request.session[liked_cat] = cat.id
     return HttpResponse(likes)
     
 def suggest_category(request):
