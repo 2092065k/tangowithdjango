@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from datetime import datetime
 from rango.bing_search import run_query
+from rango.helpers import get_category_list
 
 def index(request):
     category_list = Category.objects.order_by('-likes')[:5]
@@ -196,4 +197,27 @@ def users(request):
     except:
         pass
     return render(request, 'rango/users.html', context_dict)
+ 
+@login_required 
+def like_category(request):
+    cat_id = None
+    if request.method == 'GET':
+        cat_id = request.GET['category_id']
+    
+    likes = 0
+    if cat_id:
+        cat = Category.objects.get(id=int(cat_id))
+        if cat:
+            likes = cat.likes + 1
+            cat.likes = likes
+            cat.save()
+    return HttpResponse(likes)
+    
+def suggest_category(request):
+    cat_list = []
+    starts_with = ''
+    if request.method == 'GET':
+        starts_with = request.GET['suggestion']
+    cat_list = get_category_list(8, starts_with)
+    return render(request, 'rango/cats.html', {'cats': cat_list })
     

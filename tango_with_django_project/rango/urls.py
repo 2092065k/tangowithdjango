@@ -12,4 +12,6 @@ urlpatterns = patterns('',
         url(r'^add_profile/$', views.register_profile, name = 'add_profile'),
         url(r'^profile/(?P<user_username>[\w\-]+)$', views.profile, name = 'profile'),
         url(r'^edit_profile/$', views.edit_profile, name = 'edit_profile'),
-        url(r'^users/$', views.users, name = 'users'))
+        url(r'^users/$', views.users, name = 'users'),
+        url(r'^like_category/$', views.like_category, name='like_category'),
+        url(r'^suggest_category/$', views.suggest_category, name='suggest_category'))
