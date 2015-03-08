@@ -1,2 +1,2 @@
 # tangowithdjango
-The rango project!
+The django-rango project!
