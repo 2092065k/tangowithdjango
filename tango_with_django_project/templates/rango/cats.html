@@ -10,7 +10,10 @@
      {% endfor %}
      
 {% else %}
+    {% if hide %}
+        <br />
+    {% else %}
     <li><strong> There are no categories present.</strong></li>
-    
+    {% endif %}
     </ul>
 {% endif %}
