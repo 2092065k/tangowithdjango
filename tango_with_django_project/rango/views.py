@@ -111,7 +111,7 @@ def add_page(request, category_name_slug):
                 page.category = cat
                 page.views = 0
                 page.save()
-                return category(request, category_name_slug)
+                return HttpResponseRedirect('/'[0] + 'rango/category/' + cat.slug)
         else:
             print form.errors
     else:
